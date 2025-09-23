@@ -16,8 +16,7 @@ For more details, check out our [wiki](https://pojavlauncher.app/)!
 
 ## Important Notes
 
-* We do not have an official TikTok account. No one from the dev team makes TikTok videos.
-* The official Twitter for PojavLauncher is [@PLaunchTeam](https://twitter.com/PLaunchTeam). Any others (most notably @PojavLauncher) are fake.
+**PojavLauncher has been discontinued** and is no longer supported. Its successor is available [here](https://github.com/AngelAuraMC/Amethyst-Android).
 
 ## Table of Contents
 
