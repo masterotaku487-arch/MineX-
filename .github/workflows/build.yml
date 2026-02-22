@@ -1,0 +1,81 @@
+name: ⛏ Build MineX APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout MineX (logos e scripts)
+        uses: actions/checkout@v4
+        with:
+          path: MineX-assets
+
+      - name: 📦 Clonar PojavLauncher (fonte original)
+        run: |
+          git clone --depth=1 -b v3_openjdk \
+            https://github.com/PojavLauncherTeam/PojavLauncher.git \
+            PojavLauncher
+          echo "✓ Fonte clonado"
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar Pillow
+        run: pip install Pillow
+
+      - name: ☕ Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: 🎨 Aplicar branding MineX
+        run: python3 MineX-assets/apply_branding.py
+
+      - name: 🔨 Build com Gradle
+        working-directory: PojavLauncher
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g"
+
+      - name: 🔍 Localizar APK gerado
+        run: |
+          find PojavLauncher -name "*.apk" | tee apk_list.txt
+          APK=$(find PojavLauncher -name "*.apk" | head -1)
+          mkdir -p output
+          cp "$APK" output/MineX.apk
+          echo "✓ APK: $(du -sh output/MineX.apk | cut -f1)"
+
+      - name: 📤 Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MineX-APK
+          path: output/MineX.apk
+          retention-days: 30
+
+      - name: 🏷️ Criar Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "⛏ MineX v${{ github.run_number }}"
+          body: |
+            ## ⛏ MineX - Minecraft Java Launcher for Android
+
+            ### 📥 Como instalar:
+            1. Baixe o `MineX.apk` abaixo
+            2. Habilite **"Fontes desconhecidas"** nas configurações do Android
+            3. Instale e jogue!
+
+            > Build automático com Gradle | Baseado no PojavLauncher | Commit: ${{ github.sha }}
+          files: output/MineX.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
