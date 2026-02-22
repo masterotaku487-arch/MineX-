@@ -1,0 +1,19 @@
+%s (MineX - Minecraft Java Launcher for Android), version %s<br><br>
+
+* About MineX:<br>
+ • MineX is a custom launcher based on PojavLauncher that lets you play Minecraft: Java Edition on Android.<br><br>
+
+* License:<br>
+ • This application is licensed under <a href="https://github.com/PojavLauncherTeam/PojavLauncher/blob/master/LICENSE">GNU GPLv3</a>.<br>
+
+* Credits / Third party components and their licenses:<br>
+ • Apache Commons Compress (unknown or Apache License 2.0).<br>
+ • exp4j: <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.<br>
+ • GL4ES: <a href="https://github.com/ptitSeb/gl4es/blob/master/LICENSE">MIT License</a>.<br>
+ • OpenJDK: <a href="https://openjdk.java.net/legal/gplv2+ce.html">GNU GPLv2 License</a>.<br>
+ • LWJGL: <a href="http://legacy.lwjgl.org/license.php.html">LWJGL 2's License</a>.<br>
+ • Based on PojavLauncher by Tran Khanh Duy.<br><br>
+
+* Notes:<br>
+ - This app is not affiliated with Minecraft, Mojang or Microsoft.<br>
+ - MineX is an independent project.<br>

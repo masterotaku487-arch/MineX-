@@ -1,0 +1,62 @@
+name: Build MineX APK
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:  # Permite rodar manualmente
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Instalar dependências
+        run: |
+          pip install cryptography Pillow
+
+      - name: 🔨 Build e Assinar APK
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: 📤 Upload APK como Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MineX-APK
+          path: output/MineX.apk
+          retention-days: 30
+
+      - name: 🏷️ Criar Release (apenas no push da main)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "⛏ MineX v${{ github.run_number }}"
+          body: |
+            ## ⛏ MineX - Build Automático
+
+            ### 📥 Como instalar:
+            1. Baixe o arquivo `MineX.apk` abaixo
+            2. Habilite **"Fontes desconhecidas"** no Android
+            3. Instale e jogue!
+
+            ### 🔄 Mudanças neste build:
+            - Build automático via GitHub Actions
+            - Commit: ${{ github.sha }}
+
+            > ⚠️ APK assinado com certificado de debug.
+          files: output/MineX.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
