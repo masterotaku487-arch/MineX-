@@ -39,6 +39,11 @@ jobs:
       - name: 🎨 Aplicar branding MineX
         run: python3 MineX-assets/apply_branding.py
 
+      - name: 🔧 Restaurar default.json original
+        run: |
+          git -C PojavLauncher checkout HEAD -- \
+            app_pojavlauncher/src/main/assets/default.json
+
       - name: 🔨 Build com Gradle
         working-directory: PojavLauncher
         run: |
@@ -79,3 +84,4 @@ jobs:
           files: output/MineX.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
