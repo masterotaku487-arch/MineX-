@@ -43,6 +43,12 @@ jobs:
         run: |
           git -C PojavLauncher checkout HEAD -- \
             app_pojavlauncher/src/main/assets/default.json
+            
+      - name: 🔧 Restaurar arquivos originais
+        run: |
+          git -C PojavLauncher checkout HEAD -- \
+            app_pojavlauncher/src/main/assets/default.json \
+            app_pojavlauncher/src/main/res/       
 
       - name: 🔨 Build com Gradle
         working-directory: PojavLauncher
