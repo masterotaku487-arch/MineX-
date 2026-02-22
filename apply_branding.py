@@ -1,9 +1,9 @@
 """
 MineX Branding Script
-- Troca ícones
-- Troca nome do app em strings.xml
-- Substitui textos visíveis (about, labels)
-- NÃO renomeia pastas, módulos ou package names (isso quebraria o Gradle)
+- Troca icones
+- Troca app_name no strings.xml
+- Troca texto no about_en.txt
+- NAO mexe em codigo, URLs, packages, modulos ou Gradle
 """
 from PIL import Image
 import os, re
@@ -20,7 +20,7 @@ MIPMAP_SIZES = {
 }
 
 def trocar_icones():
-    print("🎨 Trocando ícones...")
+    print("Trocando icones...")
     icon       = Image.open(f"{ASSETS_DIR}/icon.png").convert("RGBA")
     icon_round = Image.open(f"{ASSETS_DIR}/icon_round.png").convert("RGBA")
 
@@ -28,6 +28,7 @@ def trocar_icones():
         for folder, size in MIPMAP_SIZES.items():
             if not root.endswith(folder):
                 continue
+
             for fname in ["ic_launcher.png", "ic_launcher.webp"]:
                 fp = os.path.join(root, fname)
                 if os.path.exists(fp):
@@ -53,25 +54,25 @@ def trocar_icones():
                     if fp.endswith(".webp") and fp != out:
                         os.remove(fp)
 
-            print(f"  ✓ {folder} ({size}px)")
+            print(f"  ok {folder} ({size}px)")
 
 def trocar_assets_launcher():
-    print("📁 Trocando assets do launcher...")
+    print("Trocando assets do launcher...")
     for root, dirs, files in os.walk(POJAV_DIR):
         for fname in files:
             fpath = os.path.join(root, fname)
             if fname == "pojavlauncher.png":
                 img = Image.open(f"{ASSETS_DIR}/icon.png").resize((512, 512), Image.LANCZOS)
                 img.save(fpath)
-                print(f"  ✓ {fname}")
+                print(f"  ok {fname}")
             elif fname == "pojavtext.png":
                 img = Image.open(f"{ASSETS_DIR}/logo_banner.png").resize((512, 128), Image.LANCZOS)
                 img.save(fpath)
-                print(f"  ✓ {fname}")
+                print(f"  ok {fname}")
 
 def trocar_nome_strings():
-    """Troca só o app_name e app_name_short no strings.xml — nada mais."""
-    print("📝 Trocando nome do app em strings.xml...")
+    """Troca APENAS app_name e app_name_short no strings.xml."""
+    print("Trocando app_name em strings.xml...")
     count = 0
     for root, dirs, files in os.walk(POJAV_DIR):
         for fname in files:
@@ -95,49 +96,35 @@ def trocar_nome_strings():
                         f.write(content)
                     count += 1
             except Exception as e:
-                print(f"  ⚠️ Erro em {fpath}: {e}")
-    print(f"  ✓ {count} strings.xml atualizados")
+                print(f"  aviso: erro em {fpath}: {e}")
+    print(f"  ok {count} strings.xml atualizados")
 
-def trocar_textos_visiveis():
-    """
-    Troca textos visíveis ao usuário (about, labels de UI).
-    NÃO toca em: nomes de módulos, package names, paths de assets,
-    nomes de classes, imports, build.gradle, settings.gradle.
-    """
-    print("📄 Trocando textos visíveis...")
-
-    SAFE_FILES = {"about_en.txt", "about_zh.txt"}
-
-    REPLACEMENTS = [
-        ("PojavLauncher", "MineX"),
-        ("Pojav Launcher", "MineX"),
-        ("pojav launcher", "minex"),
-    ]
-
-    count = 0
+def trocar_about():
+    """Troca texto visivel APENAS em about_en.txt."""
+    print("Trocando about_en.txt...")
     for root, dirs, files in os.walk(POJAV_DIR):
         for fname in files:
-            if fname not in SAFE_FILES:
+            if fname not in ("about_en.txt", "about_zh.txt"):
                 continue
             fpath = os.path.join(root, fname)
             try:
                 with open(fpath, "r", encoding="utf-8", errors="ignore") as f:
                     content = f.read()
                 original = content
-                for old, new in REPLACEMENTS:
-                    content = content.replace(old, new)
+                content = content.replace("PojavLauncher", "MineX")
+                content = content.replace("Pojav Launcher", "MineX")
                 if content != original:
                     with open(fpath, "w", encoding="utf-8") as f:
                         f.write(content)
-                    count += 1
+                    print(f"  ok {fname}")
             except Exception:
                 pass
-    print(f"  ✓ {count} arquivos de texto atualizados")
 
 if __name__ == "__main__":
-    print("⛏ Aplicando branding MineX...\n")
+    print("Aplicando branding MineX...\n")
     trocar_icones()
     trocar_assets_launcher()
     trocar_nome_strings()
-    trocar_textos_visiveis()
-    print("\n✅ Branding aplicado! Pronto para compilar.")
+    trocar_about()
+    print("\nPronto!")
+          
