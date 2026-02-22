@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MineX Grid — Strings
+    Adicione estas strings ao seu strings.xml existente.
+    Arquivo: app_pojavlauncher/src/main/res/values/strings.xml
+-->
+<resources>
+    <!-- MineX Grid -->
+    <string name="grid_category_title">⚡ MineX Grid (P2P)</string>
+    <string name="grid_enabled_title">Ativar MineX Grid</string>
+    <string name="grid_enabled_summary">Compartilha cache de shaders com outros usuários para melhorar FPS</string>
+    <string name="grid_status_title">Status da Rede</string>
+    <string name="grid_status_peers">Peers conectados: %d</string>
+    <string name="grid_status_no_peers">Nenhum peer encontrado</string>
+    <string name="grid_node_id_title">ID do Nó</string>
+    <string name="grid_pre_launch_title">MineX Grid</string>
+    <string name="grid_pre_launch_message">Buscando cache de shaders na rede… %d%%</string>
+</resources>

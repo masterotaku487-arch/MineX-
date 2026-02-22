@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MineX Grid — Switch de configuração
+    Adicione este bloco ao XML de preferências existente do PojavLauncher.
+    Normalmente em: res/xml/pref_misc.xml  ou  res/xml/pref_experimental.xml
+
+    Este SwitchPreferenceCompat aparecerá na tela de configurações do launcher.
+    O valor é lido por MineXGridManager.isEnabled() via SharedPreferences.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- ════════════════════════════════════════════════════════
+         MineX Grid — cole este bloco no pref_misc.xml existente
+         ════════════════════════════════════════════════════════ -->
+    <PreferenceCategory
+        android:title="⚡ MineX Grid (P2P)"
+        android:key="category_minexgrid">
+
+        <SwitchPreferenceCompat
+            android:key="grid_enabled"
+            android:title="Ativar MineX Grid"
+            android:summary="Compartilha cache de shaders com outros usuários na rede para melhorar o desempenho"
+            android:defaultValue="false"
+            app:iconSpaceReserved="false" />
+
+        <Preference
+            android:key="grid_status"
+            android:title="Status da Rede"
+            android:summary="Peers conectados: 0"
+            android:enabled="false"
+            app:iconSpaceReserved="false"
+            android:dependency="grid_enabled" />
+
+        <Preference
+            android:key="grid_node_id"
+            android:title="ID do Nó"
+            android:summary="Carregando..."
+            android:enabled="false"
+            app:iconSpaceReserved="false"
+            android:dependency="grid_enabled" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
